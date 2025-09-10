@@ -1,15 +1,4 @@
-# ferroanalysis <img src="man/figures/logo.png" align="right" height="139"/>
-
-<!-- badges: start -->
-
-[![R-CMD-check][]][1] [![CRAN status]][2]
-
-  [R-CMD-check]: https://github.com/yourusername/ferroanalysis/actions/workflows/R-CMD-check.yaml/badge.svg
-  [1]: https://github.com/yourusername/ferroanalysis/actions/workflows/R-CMD-check.yaml
-  [CRAN status]: https://www.r-pkg.org/badges/version/ferroanalysis
-  [2]: https://CRAN.R-project.org/package=ferroanalysis
-
-<!-- badges: end -->
+# ferroanalysis
 
 **ferroanalysis** is a comprehensive R package for ferroelectric device characterization and analysis, specifically designed for HfO₂-based ferroelectric capacitors and other ferroelectric materials. The package provides automated analysis pipelines and publication-ready visualizations for ferroelectric device research.
 
