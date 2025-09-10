@@ -7,7 +7,7 @@
 create_partitioning_summary(partitioning_stats)
 }
 \arguments{
-\item{partitioning_stats}{List of partitioning statistics from 
+\item{partitioning_stats}{List of partitioning statistics from
 calculate_partitioning_statistics()}
 }
 \value{

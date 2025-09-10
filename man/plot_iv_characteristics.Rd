@@ -14,8 +14,7 @@ plot_iv_characteristics(
 \item{df}{A data frame containing ferroelectric simulation data with columns:
 v_app, i_disp, i_leak, i_total}
 
-\item{use_doped_leakage}{Logical indicating whether to use doped leakage current
-if available (i_leak_doped column)}
+\item{use_doped_leakage}{Logical indicating whether to use doped leakage current}
 
 \item{current_types}{Character vector specifying which current types to plot.
 Options: "displacement", "leakage", "total"}

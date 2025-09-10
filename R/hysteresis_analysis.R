@@ -38,7 +38,7 @@ plot_hysteresis_loop <- function(df, color_by = "time") {
   if (color_by == "time") {
     p <- p +
       ggplot2::geom_path(ggplot2::aes(color = time), size = 1.2) +
-      viridis::scale_color_viridis_c(labels = scales::scientific, name = "Time (s)")
+      ggplot2::scale_color_viridis_c(labels = scales::scientific, name = "Time (s)")
   } else {
     p <- p +
       ggplot2::geom_path(color = "darkblue", size = 1.2)

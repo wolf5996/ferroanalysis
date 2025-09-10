@@ -62,6 +62,8 @@ ferroanalysis requires the following R packages:
 
 -   `purrr` (\>= 0.3.0)
 
+-   `magrittr` (pipe operator support)
+
 ## Quick Start
 
 ### Basic Usage
@@ -76,6 +78,11 @@ results <- comprehensive_ferroelectric_analysis(
   save_plots = TRUE,
   save_tables = TRUE
 )
+
+# Use pipe operator for streamlined workflows
+results <- "path/to/simulation_data.csv" %>%
+  process_ferroelectric_data() %>%
+  comprehensive_ferroelectric_analysis(output_dir = "analysis_results")
 
 # Access specific results
 print(results$hysteresis$parameters)

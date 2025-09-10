@@ -15,8 +15,6 @@ The input data frame with additional parametric columns:
     \item{freq_1kHz, freq_100kHz}{Frequency analysis components}
     \item{thickness_factor}{Normalized thickness variation factor}
     \item{pol_thickness}{Polarization modified by thickness effects}
-    \item{doping_factor}{Doping concentration factor}
-    \item{i_leak_doped}{Leakage current modified by doping effects}
   }
 }
 \description{
@@ -27,7 +25,6 @@ response, thickness effects, and doping concentration impacts.
 This function simulates the effects of various device parameters:
 - Frequency response at 1 kHz and 100 kHz
 - Thickness variations and their impact on polarization
-- Doping concentration effects on leakage current
 }
 \examples{
 \dontrun{

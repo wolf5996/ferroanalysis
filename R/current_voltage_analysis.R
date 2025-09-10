@@ -6,7 +6,6 @@
 #' @param df A data frame containing ferroelectric simulation data with columns:
 #'   v_app, i_disp, i_leak, i_total
 #' @param use_doped_leakage Logical indicating whether to use doped leakage current
-#'   if available (i_leak_doped column)
 #' @param current_types Character vector specifying which current types to plot.
 #'   Options: "displacement", "leakage", "total"
 #'
@@ -34,12 +33,11 @@ plot_iv_characteristics <- function(df, use_doped_leakage = TRUE,
   
   # Prepare current data
   current_data <- df %>%
-    dplyr::select(v_app, i_disp, i_total, 
-                 if(use_doped_leakage && "i_leak_doped" %in% names(df)) i_leak_doped else i_leak) %>%
+    dplyr::select(v_app, i_disp, i_total, i_leak) %>%
     dplyr::rename(
       displacement = i_disp,
       total = i_total,
-      leakage = if(use_doped_leakage && "i_leak_doped" %in% names(df)) i_leak_doped else i_leak
+      leakage = i_leak
     )
   
   # Filter selected current types
@@ -112,7 +110,7 @@ plot_cv_characteristics <- function(df, color_by = "time") {
   if (color_by == "time") {
     p <- p +
       ggplot2::geom_path(ggplot2::aes(color = time), size = 1.2) +
-      viridis::scale_color_viridis_c(labels = scales::scientific, name = "Time (s)")
+      ggplot2::scale_color_viridis_c(labels = scales::scientific, name = "Time (s)")
   } else {
     p <- p +
       ggplot2::geom_path(color = "orange", size = 1.2)

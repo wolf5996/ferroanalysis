@@ -136,17 +136,12 @@ plot_thickness_effect <- function(df) {
 plot_doping_effect <- function(df) {
   df %>%
     ggplot2::ggplot(ggplot2::aes(x = v_app)) +
-    ggplot2::geom_path(ggplot2::aes(y = i_leak, color = "Original Leakage"), size = 1.2) +
-    ggplot2::geom_path(ggplot2::aes(y = i_leak_doped, color = "Doped Leakage"), size = 1.2) +
+    ggplot2::geom_path(ggplot2::aes(y = i_leak), color = "blue", size = 1.2) +
     ggplot2::scale_y_continuous(labels = scales::scientific) +
-    ggplot2::scale_color_manual(
-      values = c("Original Leakage" = "blue", "Doped Leakage" = "red")
-    ) +
     ggplot2::labs(
-      title = "Doping Effect on Leakage Current",
+      title = "Leakage Current vs Voltage",
       x = "Applied Voltage (V)", 
-      y = "Leakage Current (A)",
-      color = "Condition"
+      y = "Leakage Current (A)"
     ) +
     ggplot2::theme_minimal() +
     ggplot2::theme(
@@ -198,17 +193,16 @@ analyze_parametric_sensitivity <- function(df) {
   
   # Doping sensitivity
   doping_sensitivity <- list(
-    max_leakage_change = max(abs(df$i_leak_doped - df$i_leak), na.rm = TRUE),
-    mean_leakage_change = mean(abs(df$i_leak_doped - df$i_leak), na.rm = TRUE),
-    relative_leakage_change = mean(abs(df$i_leak_doped - df$i_leak), na.rm = TRUE) / 
-                             mean(abs(df$i_leak), na.rm = TRUE)
+    max_leakage = max(abs(df$i_leak), na.rm = TRUE),
+    mean_leakage = mean(abs(df$i_leak), na.rm = TRUE),
+    relative_leakage_change = 0  # No doping effects available
   )
   
   # Parameter correlations
   parameter_correlations <- list(
     thickness_vs_voltage_efficiency = cor(df$thickness_factor, df$voltage_efficiency, use = "complete.obs"),
-    doping_vs_total_current = cor(df$doping_factor, df$i_total, use = "complete.obs"),
-    thickness_vs_capacitance = cor(df$thickness_factor, df$c_corrected, use = "complete.obs")
+    thickness_vs_capacitance = cor(df$thickness_factor, df$c_corrected, use = "complete.obs"),
+    leakage_vs_total_current = cor(df$i_leak, df$i_total, use = "complete.obs")
   )
   
   list(

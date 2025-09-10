@@ -20,7 +20,7 @@
 #' # Create voltage partitioning plot
 #' data <- process_ferroelectric_data("simulation_data.csv")
 #' plot_voltage_partitioning(data)
-#' 
+#'
 #' # Create line plot version
 #' plot_voltage_partitioning(data, plot_type = "lines")
 #' }
@@ -31,11 +31,11 @@ plot_voltage_partitioning <- function(df, plot_type = "area") {
   voltage_data <- df %>%
     dplyr::select(time, v_app, v_fe, v_depl) %>%
     tidyr::pivot_longer(-time, names_to = "type", values_to = "voltage")
-  
+
   # Base plot
   p <- voltage_data %>%
     ggplot2::ggplot(ggplot2::aes(x = time, y = voltage))
-  
+
   if (plot_type == "area") {
     p <- p +
       ggplot2::geom_area(ggplot2::aes(fill = type), alpha = 0.7, position = "identity") +
@@ -64,12 +64,12 @@ plot_voltage_partitioning <- function(df, plot_type = "area") {
       ) +
       ggplot2::labs(fill = "Voltage Component")
   }
-  
+
   p +
     ggplot2::scale_x_continuous(labels = scales::scientific) +
     ggplot2::labs(
       title = "Voltage Partitioning Analysis",
-      x = "Time (s)", 
+      x = "Time (s)",
       y = "Voltage (V)"
     ) +
     ggplot2::theme_minimal() +
@@ -110,7 +110,7 @@ calculate_partitioning_statistics <- function(df) {
     max_efficiency = max(df$voltage_efficiency, na.rm = TRUE),
     std_efficiency = sd(df$voltage_efficiency, na.rm = TRUE)
   )
-  
+
   # Analyze partitioning by polarization state
   df_analysis <- df %>%
     dplyr::mutate(
@@ -121,7 +121,7 @@ calculate_partitioning_statistics <- function(df) {
         TRUE ~ "Intermediate"
       )
     )
-  
+
   partitioning_by_state <- df_analysis %>%
     dplyr::group_by(pol_state) %>%
     dplyr::summarise(
@@ -130,24 +130,24 @@ calculate_partitioning_statistics <- function(df) {
       avg_capacitance = mean(c_depl, na.rm = TRUE),
       .groups = "drop"
     )
-  
+
   # Dynamic range analysis
   dynamic_range <- list(
-    efficiency_range = max(df$voltage_efficiency, na.rm = TRUE) - 
+    efficiency_range = max(df$voltage_efficiency, na.rm = TRUE) -
                       min(df$voltage_efficiency, na.rm = TRUE),
-    depl_fraction_range = max(df$depl_fraction, na.rm = TRUE) - 
+    depl_fraction_range = max(df$depl_fraction, na.rm = TRUE) -
                          min(df$depl_fraction, na.rm = TRUE),
-    relative_variation = sd(df$voltage_efficiency, na.rm = TRUE) / 
+    relative_variation = sd(df$voltage_efficiency, na.rm = TRUE) /
                         mean(df$voltage_efficiency, na.rm = TRUE)
   )
-  
+
   # Correlation with other variables
   correlation_metrics <- list(
     efficiency_vs_polarization = cor(df$voltage_efficiency, df$polarization, use = "complete.obs"),
     efficiency_vs_capacitance = cor(df$voltage_efficiency, df$c_depl, use = "complete.obs"),
     depl_fraction_vs_polarization = cor(df$depl_fraction, df$polarization, use = "complete.obs")
   )
-  
+
   list(
     efficiency_stats = efficiency_stats,
     partitioning_by_state = partitioning_by_state,
@@ -177,7 +177,7 @@ plot_efficiency_vs_polarization <- function(df) {
     ggplot2::ggplot(ggplot2::aes(x = polarization, y = voltage_efficiency)) +
     ggplot2::geom_path(color = "darkblue", size = 1.2, alpha = 0.7) +
     ggplot2::geom_point(ggplot2::aes(color = time), size = 1) +
-    viridis::scale_color_viridis_c(labels = scales::scientific, name = "Time (s)") +
+    ggplot2::scale_color_viridis_c(labels = scales::scientific, name = "Time (s)") +
     ggplot2::labs(
       title = "Voltage Efficiency vs Polarization",
       subtitle = "Dynamic coupling between voltage partitioning and ferroelectric state",
@@ -197,7 +197,7 @@ plot_efficiency_vs_polarization <- function(df) {
 #' This function creates a formatted summary table of voltage partitioning
 #' analysis suitable for reports and presentations.
 #'
-#' @param partitioning_stats List of partitioning statistics from 
+#' @param partitioning_stats List of partitioning statistics from
 #'   calculate_partitioning_statistics()
 #'
 #' @return A data frame with formatted partitioning metrics
@@ -215,7 +215,7 @@ create_partitioning_summary <- function(partitioning_stats) {
   data.frame(
     Metric = c(
       "Mean Voltage Efficiency",
-      "Efficiency Range", 
+      "Efficiency Range",
       "Relative Variation",
       "Max Ferroelectric Voltage Fraction",
       "Min Ferroelectric Voltage Fraction",
@@ -237,7 +237,7 @@ create_partitioning_summary <- function(partitioning_stats) {
     Description = c(
       "Average Vfe/Vapp ratio",
       "Max - Min efficiency",
-      "Std/Mean efficiency", 
+      "Std/Mean efficiency",
       "Maximum voltage coupling",
       "Minimum voltage coupling",
       "Linear correlation coefficient",
@@ -266,7 +266,7 @@ plot_partitioning_hysteresis <- function(df) {
   df %>%
     ggplot2::ggplot(ggplot2::aes(x = v_app, y = voltage_efficiency)) +
     ggplot2::geom_path(ggplot2::aes(color = time), size = 1.2) +
-    viridis::scale_color_viridis_c(labels = scales::scientific, name = "Time (s)") +
+    ggplot2::scale_color_viridis_c(labels = scales::scientific, name = "Time (s)") +
     ggplot2::labs(
       title = "Voltage Partitioning Hysteresis",
       subtitle = "Voltage efficiency vs applied voltage showing hysteretic behavior",
@@ -301,7 +301,7 @@ calculate_capacitive_coupling <- function(df) {
   # Estimate ferroelectric capacitance from voltage division
   # V_fe/V_app = C_depl/(C_fe + C_depl)
   # Solving for C_fe: C_fe = C_depl * (1 - V_fe/V_app) / (V_fe/V_app)
-  
+
   df_coupling <- df %>%
     dplyr::filter(abs(voltage_efficiency) > 0.1 & abs(voltage_efficiency) < 0.9) %>%
     dplyr::mutate(
@@ -309,7 +309,7 @@ calculate_capacitive_coupling <- function(df) {
       coupling_factor = c_depl / (c_fe_estimated + c_depl),
       quality_factor = c_fe_estimated / c_depl
     )
-  
+
   # Calculate statistics
   coupling_stats <- list(
     mean_fe_capacitance = mean(df_coupling$c_fe_estimated, na.rm = TRUE),
@@ -320,6 +320,6 @@ calculate_capacitive_coupling <- function(df) {
       max = max(df_coupling$quality_factor, na.rm = TRUE)
     )
   )
-  
+
   return(coupling_stats)
 }

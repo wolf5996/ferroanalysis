@@ -130,15 +130,12 @@ calculate_derived_variables <- function(df) {
 #'     \item{freq_1kHz, freq_100kHz}{Frequency analysis components}
 #'     \item{thickness_factor}{Normalized thickness variation factor}
 #'     \item{pol_thickness}{Polarization modified by thickness effects}
-#'     \item{doping_factor}{Doping concentration factor}
-#'     \item{i_leak_doped}{Leakage current modified by doping effects}
 #'   }
 #'
 #' @details
 #' This function simulates the effects of various device parameters:
 #' - Frequency response at 1 kHz and 100 kHz
 #' - Thickness variations and their impact on polarization
-#' - Doping concentration effects on leakage current
 #'
 #' @examples
 #' \dontrun{
@@ -157,11 +154,7 @@ calculate_parametric_variations <- function(df) {
       
       # Thickness variation simulation (normalized thickness factor)
       thickness_factor = 1 + 0.2 * sin(time * 10000),
-      pol_thickness = polarization * thickness_factor,
-      
-      # Doping concentration effect on leakage
-      doping_factor = 1 + 0.3 * (v_fe/max(abs(v_fe), na.rm = TRUE)),
-      i_leak_doped = i_leak * doping_factor
+      pol_thickness = polarization * thickness_factor
     )
   
   return(df)
